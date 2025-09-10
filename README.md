@@ -42,7 +42,7 @@ The main objective is to perform data-driven analysis to detect suspicious activ
 
 ## Conclusion
 
--The project demonstrates how SQL can be used to uncover hidden patterns in financial transactions and provide actionable insights for fraud detection and compliance monitoring.By combining business logic with SQL analytics, the project highlights the importance of data-driven approaches in the fight against money laundering and financial crime.
+The project demonstrates how SQL can be used to uncover hidden patterns in financial transactions and provide actionable insights for fraud detection and compliance monitoring.By combining business logic with SQL analytics, the project highlights the importance of data-driven approaches in the fight against money laundering and financial crime.
 
 
 
