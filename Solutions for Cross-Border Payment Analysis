@@ -1,0 +1,141 @@
+SQL Solutions for Cross-Border Payment Analysis
+
+--1. Find the top 5 sender accounts by total transaction amount
+SELECT 
+    sender_account,
+    SUM(amount) AS total_amount,
+    RANK() OVER (ORDER BY SUM(amount) DESC) AS rnk
+FROM cross_bp
+GROUP BY sender_account
+LIMIT 5;
+
+
+
+--2. Hourly transaction volume trend
+
+SELECT 
+    EXTRACT(HOUR FROM time_col) AS hour_of_day,
+    COUNT(*) AS tx_count,
+    SUM(amount) AS total_amount
+FROM cross_bp
+GROUP BY hour_of_day
+ORDER BY hour_of_day;
+
+--3. Monthly laundering vs non-laundering trend
+
+SELECT 
+    EXTRACT(MONTH FROM date_col) AS month,
+    is_laundering,
+    SUM(amount) AS total_amount,
+    COUNT(*) AS tx_cnt
+FROM cross_bp
+GROUP BY 1, 2
+ORDER BY 1, 2;
+
+
+--4. Top sender–receiver pairs (by transaction count and total amount)
+SELECT 
+    sender_account,
+    receiver_account,
+    COUNT(*) AS tx_count,
+    SUM(amount) AS total_amount
+FROM cross_bp
+GROUP BY sender_account, receiver_account
+HAVING COUNT(*) > 5
+ORDER BY total_amount DESC
+LIMIT 10;
+
+--5. Flagging unusually high-value transactions using CASE
+select cr_id,
+    sender_account,
+    receiver_account,
+    amount,
+	case
+	when amount>100000 then 'High Risk'
+	when amount >50000 then 'Risk'
+	else 'Normal'
+	end as risk_level
+	from cross_bp
+	order by amount desc
+	limit 15;
+
+--6. Average transaction size by payment type and laundering type
+SELECT 
+    payment_type,
+    laundering_type,
+    AVG(amount) AS avg_amount,
+    SUM(amount) AS total_amount,
+    COUNT(*) AS tx_count
+FROM cross_bp
+GROUP BY payment_type, laundering_type
+ORDER BY avg_amount DESC;
+
+
+--7. Detect accounts sending money to multiple receivers (possible layering)
+SELECT 
+    sender_account,
+    COUNT(DISTINCT receiver_account) AS unique_receivers,
+    SUM(amount) AS total_amount
+FROM cross_bp
+GROUP BY sender_account
+HAVING COUNT(DISTINCT receiver_account) > 3
+ORDER BY unique_receivers DESC, total_amount DESC
+LIMIT 10;
+
+--8. Find the largest laundering transaction per day (window + CTE)
+WITH daily_rank AS (
+    SELECT 
+        date_col,
+        sender_account,
+        receiver_account,
+        amount,
+        RANK() OVER (PARTITION BY date_col ORDER BY amount DESC) AS rnk
+    FROM cross_bp
+    WHERE is_laundering = TRUE
+)
+SELECT *
+FROM daily_rank
+WHERE rnk = 1
+ORDER BY date_col;
+
+--9. Cross-border vs domestic transactions (using CASE)
+SELECT 
+    CASE 
+        WHEN sender_bank_location <> receiver_bank_location THEN 'Cross-Border'
+        ELSE 'Domestic'
+    END AS tx_type,
+    COUNT(*) AS tx_count,
+    SUM(amount) AS total_amount
+FROM cross_bp
+GROUP BY tx_type;
+
+--10. Rolling 7-day transaction totals per sender (window + time)
+SELECT 
+    sender_account,
+    date_col,
+    SUM(amount) OVER (
+        PARTITION BY sender_account 
+        ORDER BY date_col
+        RANGE BETWEEN INTERVAL '7 days' PRECEDING AND CURRENT ROW
+    ) AS rolling_7d_amount
+FROM cross_bp
+ORDER BY sender_account, date_col;
+
+
+--11. Sender to Receiver account country
+SELECT 
+    sender_bank_location AS sender_country,
+    receiver_bank_location AS receiver_country,
+    COUNT(*) AS tx_count,
+    SUM(amount) AS total_amount
+FROM cross_bp
+GROUP BY sender_country, receiver_country
+ORDER BY tx_count DESC
+LIMIT 20;
+
+
+
+
+
+
+
