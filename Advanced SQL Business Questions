@@ -1,0 +1,16 @@
+-- Advanced SQL Business Questions for Cross-Border Payment Analysis
+
+1. Find the top 5 sender accounts by total transaction amount.
+2. Analyze the hourly transaction volume trend.
+3. Compare monthly laundering vs non-laundering transaction trends.
+4. Identify the top sender–receiver pairs by transaction count and total amount.
+5. Flag unusually high-value transactions using a risk classification.
+6. Calculate the average transaction size by payment type and laundering type.
+7. Detect accounts sending money to multiple receivers (possible layering).
+8. Find the largest laundering transaction per day.
+9. Compare cross-border vs domestic transactions.
+10. Compute rolling 7-day transaction totals per sender.
+11. Analyze sender-to-receiver account country transaction flows.
+
+
+
