@@ -87,7 +87,7 @@ ORDER BY hour_of_day;
 
 ### 3. Monthly laundering vs non-laundering trend
 
-```
+```sql
 SELECT 
     EXTRACT(MONTH FROM date_col) AS month,
     is_laundering,
