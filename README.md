@@ -47,7 +47,7 @@ The main objective is to perform data-driven analysis to detect suspicious activ
 
 The data for this project is sourced from the Kaggle dataset:
 
-- **Dataset Link:** [Movies Dataset](https://www.kaggle.com/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml?utm_source=chatgpt.com)
+- **Dataset Link:** [Anti Money Laundering](https://www.kaggle.com/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml?utm_source=chatgpt.com)
 
 ## Schema
 
