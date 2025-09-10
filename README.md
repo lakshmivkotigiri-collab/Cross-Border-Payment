@@ -4,7 +4,15 @@
 
 ## Project Overview
 This project focuses on analyzing cross-border payment transactions using SQL. The dataset contains details such as transaction time, date, sender and receiver accounts, amount, currency, bank locations, payment type, and labels for money laundering activities.
-
 The main objective is to perform data-driven analysis to detect suspicious activities, identify high-risk transaction patterns, and gain valuable insights into international money flows.
+
+## Objectives
+
+- To understand global money movement trends between countries.
+- To identify high-value transactions and unusual behavior patterns.
+- To detect potential money laundering cases using SQL-based analysis.
+- To compare domestic vs cross-border transactions.
+- To provide insights that can assist regulators, banks, and compliance teams in detecting fraudulent activities.
+
 
 
